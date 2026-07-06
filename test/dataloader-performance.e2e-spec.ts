@@ -53,7 +53,11 @@ describe('Performance: N+1 em resolvers com DataLoader (e2e)', () => {
     const products = await Promise.all(
       Array.from({ length: 5 }).map((_, i) =>
         prisma.product.create({
-          data: { name: `Produto ${i}`, price: 10 + i, stock: 100 },
+          data: {
+            name: `e2e-dataloader Produto ${i}`,
+            price: 10 + i,
+            stock: 100,
+          },
         }),
       ),
     );
@@ -62,7 +66,7 @@ describe('Performance: N+1 em resolvers com DataLoader (e2e)', () => {
       const user = await prisma.user.create({
         data: {
           name: `User ${u}`,
-          email: `perf-user-${u}-${Date.now()}@teste.com`,
+          email: `e2e-dataloader-${u}-${Date.now()}@teste.com`,
         },
       });
 
@@ -86,16 +90,16 @@ describe('Performance: N+1 em resolvers com DataLoader (e2e)', () => {
 
   afterAll(async () => {
     await prisma.orderItem.deleteMany({
-      where: { order: { user: { email: { contains: 'perf-user' } } } },
+      where: { order: { user: { email: { startsWith: 'e2e-dataloader' } } } },
     });
     await prisma.order.deleteMany({
-      where: { user: { email: { contains: 'perf-user' } } },
+      where: { user: { email: { startsWith: 'e2e-dataloader' } } },
     });
     await prisma.user.deleteMany({
-      where: { email: { contains: 'perf-user' } },
+      where: { email: { startsWith: 'e2e-dataloader' } },
     });
     await prisma.product.deleteMany({
-      where: { name: { startsWith: 'Produto ' } },
+      where: { name: { startsWith: 'e2e-dataloader Produto ' } },
     });
     await prisma.$disconnect();
     await app.close();

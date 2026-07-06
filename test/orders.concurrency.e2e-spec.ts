@@ -20,16 +20,28 @@ describe('Orders concurrency (e2e)', () => {
   });
 
   afterAll(async () => {
+    await prisma.orderItem.deleteMany({
+      where: { order: { user: { email: { startsWith: 'e2e-concurrency' } } } },
+    });
+    await prisma.order.deleteMany({
+      where: { user: { email: { startsWith: 'e2e-concurrency' } } },
+    });
+    await prisma.user.deleteMany({
+      where: { email: { startsWith: 'e2e-concurrency' } },
+    });
+    await prisma.product.deleteMany({
+      where: { name: { startsWith: 'e2e-concurrency ' } },
+    });
     await prisma.$disconnect();
     await app.close();
   });
 
   it('não deixa o estoque ficar negativo sob concorrência', async () => {
     const user = await prisma.user.create({
-      data: { name: 'Teste', email: `teste-${Date.now()}@x.com` },
+      data: { name: 'Teste', email: `e2e-concurrency-${Date.now()}@x.com` },
     });
     const product = await prisma.product.create({
-      data: { name: 'Item concorrente', price: 10, stock: 5 },
+      data: { name: 'e2e-concurrency Item concorrente', price: 10, stock: 5 },
     });
 
     const attempts = Array.from({ length: 10 }, () =>

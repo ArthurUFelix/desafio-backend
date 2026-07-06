@@ -1,15 +1,15 @@
-# Desafio Técnico — API de Pedidos (NestJS + GraphQL + PostgreSQL)
+# Desafio Backend - Sistema de Pedidos
 
-API para cadastro de usuários e produtos, e emissão de ordens de compra, com controle de estoque seguro sob concorrência.
+API para cadastro de usuários e produtos, e emissão de ordens de compra.
 
 ## Stack
 
 - **NestJS** (Node.js)
-- **GraphQL** (code-first, via `@nestjs/graphql` + Apollo Server)
+- **GraphQL**
 - **PostgreSQL**
-- **Prisma** como ORM
+- **Prisma**
 - **Docker / Docker Compose**
-- **Jest** para testes unitários e e2e
+- **Jest**
 
 ---
 
@@ -23,7 +23,7 @@ cd <repo>
 docker compose up -d
 ```
 
-Isso sobe o Postgres, builda a imagem da aplicação, aplica as migrations (`prisma migrate deploy`) e inicia a API em `http://localhost:3000/graphql`.
+Isso sobe o Postgres, builda a imagem da aplicação, aplica as migrations e inicia a API em `http://localhost:3000/graphql`.
 
 Para acompanhar os logs:
 
@@ -75,7 +75,7 @@ mutation {
 
 ## Decisões técnicas
 
-**Prisma como ORM.** Preferido ao TypeORM pela DX (schema declarativo único, migrations versionadas automaticamente, client totalmente tipado a partir do schema). Para o escopo do desafio, reduziu bastante o tempo gasto em setup de configuração.
+**Prisma como ORM.** Escolhido pelo setup simples, migration declarativas e para experimentar no lugar do TypeORM também.
 
 **GraphQL code-first.** Os resolvers e entities são definidos em TypeScript com decorators, e o `schema.gql` é gerado automaticamente. Escolhido em vez de schema-first porque evita duplicação entre `.graphql` e tipos TS — uma única fonte de verdade.
 
@@ -100,7 +100,7 @@ mutation {
 ## O que eu faria diferente com mais tempo
 
 - **Autenticação (JWT) e autorização**, restringindo `createOrder` ao próprio usuário autenticado e protegendo mutations administrativas (ex.: `createProduct`) por role.
-- **Paginação (cursor-based)** nas queries `users`, `products` e `orders`, hoje retornando a lista inteira sem limite.
+- **Paginação e filtros** nas queries `users`, `products` e `orders`, hoje retornando a lista inteira sem limite.
 - **Logs estruturados** (usando `nestjs-pino`, por exemplo), incluindo correlação de request ID através da stack, e métricas básicas (latência de mutations, taxa de rejeição por falta de estoque).
 - **GitHub Actions** rodando lint, testes unitários e e2e (contra um Postgres de serviço) em cada PR.
 - **Rate limiting** nas mutations públicas, como proteção básica de abuso.
