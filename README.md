@@ -75,15 +75,15 @@ mutation {
 
 ## Decisões técnicas
 
-**Prisma como ORM.** Escolhido pelo setup simples, migration declarativas e para experimentar no lugar do TypeORM também.
+- **Prisma como ORM.** Escolhido pelo setup simples, migration declarativas e para experimentar no lugar do TypeORM também.
 
-**GraphQL code-first.** Os resolvers e entities são definidos em TypeScript com decorators, e o `schema.gql` é gerado automaticamente. Escolhido em vez de schema-first porque evita duplicação entre `.graphql` e tipos TS — uma única fonte de verdade.
+- **GraphQL code-first.** Os resolvers e entities são definidos em TypeScript com decorators, e o `schema.gql` é gerado automaticamente. Escolhido em vez de schema-first porque evita duplicação entre `.graphql` e tipos TS — uma única fonte de verdade.
 
-**Controle de concorrência com `SELECT ... FOR UPDATE`.** A emissão de pedidos roda dentro de uma transação Prisma (`$transaction`) que trava explicitamente a linha do produto (`FOR UPDATE`) antes de validar e decrementar o estoque.
+- **Controle de concorrência com `SELECT ... FOR UPDATE`.** A emissão de pedidos roda dentro de uma transação Prisma (`$transaction`) que trava explicitamente a linha do produto (`FOR UPDATE`) antes de validar e decrementar o estoque.
 
-**Dataloader.** Adicionado dataloader em resolvers para evitar clássico problema de N+1 em consultas aninhadas do graphql.
+- **Dataloader.** Adicionado dataloader em resolvers para evitar clássico problema de N+1 em consultas aninhadas do graphql.
 
-**Testes apenas em pontos relevantes.** Para manter esse projeto mais enxuto optei por adicionar testes apenas aos fluxos mais importantes, deixando de lado CRUDs básicos, em ocasiões de produção também deveriam ser cobertos.
+- **Testes apenas em pontos relevantes.** Para manter esse projeto mais enxuto optei por adicionar testes apenas aos fluxos mais importantes, deixando de lado CRUDs básicos, em ocasiões de produção também deveriam ser cobertos.
 
 ---
 
