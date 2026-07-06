@@ -88,7 +88,7 @@ mutation {
 
 - **Prisma como ORM.** Escolhido pelo setup simples, migration declarativas e para experimentar no lugar do TypeORM também.
 
-- **GraphQL code-first.** Os resolvers e entities são definidos em TypeScript com decorators, e o `schema.gql` é gerado automaticamente. Escolhido em vez de schema-first porque evita duplicação entre `.graphql` e tipos TS — uma única fonte de verdade.
+- **GraphQL code-first.** Os resolvers e entities são definidos em TypeScript com decorators, e o `schema.gql` é gerado automaticamente. Escolhido em vez de schema-first porque evita duplicação entre `.graphql` e tipos TS.
 
 - **Controle de concorrência com `SELECT ... FOR UPDATE`.** A emissão de pedidos roda dentro de uma transação Prisma (`$transaction`) que trava explicitamente a linha do produto (`FOR UPDATE`) antes de validar e decrementar o estoque.
 
