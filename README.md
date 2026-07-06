@@ -37,11 +37,22 @@ Para derrubar tudo (incluindo o volume do banco):
 docker compose down -v
 ```
 
-### Rodando os testes
+### Rodando os testes docker (recomendado)
 
 ```bash
-npm run test          # unitários
-npm run test:e2e      # e2e (requer banco disponível)
+docker compose exec app sh
+npm run test
+npm run test:e2e
+```
+
+### Rodando os testes local
+
+```bash
+npm install
+npx prisma generate
+cp .env.example .env
+npm run test
+npm run test:e2e
 ```
 
 ### Exemplo de uso (GraphQL)
